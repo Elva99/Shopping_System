@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>update good information</title>
+</head>
+<body>
+<p>Ready to update the good information:</p>
+<form action="update_good" method="post">
+Please enter the name of the good:<br>
+<input type="text" name="goodname"><br>
+Enter a key number to choose an operation.<br>
+Enter 1 if you want to update the good price.<br>
+Enter 2 if you want to update the good number.<br>
+<input type="radio" value="1" name="key">1<br>
+<input type="radio" value="2" name="key">2<br>
+Please enter the new information in the box below.<br>
+If you choose key=1, enter the new price.<br>
+If you choose key=2, enter the new number.<br>
+<input type="text" name="newinfo"><br>
+<input type="submit" value="submit">
+</form>
+</body>
+</html>
