@@ -1,3 +1,4 @@
+  
 package control;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.SalesmanDao;
 import entity.Salesman;
@@ -49,13 +51,17 @@ public class handleSignIn extends HttpServlet {
 		if (staff==null)
 		{
 			//out.println("Your username or password is wrong, please enter the correct information");
-			RequestDispatcher dis1=request.getRequestDispatcher("login.html");
+			String sign_in_error="Your username or password is wrong, please enter the correct information.";
+			request.setAttribute("sign_in_error",sign_in_error);
+			RequestDispatcher dis1=request.getRequestDispatcher("login.jsp");
 			dis1.include(request, response);
 		}
 		else
 		{
-			RequestDispatcher dis2=request.getRequestDispatcher("salesmanChoice.html");
-			dis2.forward(request, response);
+			HttpSession session=request.getSession(true);
+			session.setAttribute("uname", name);
+			session.setAttribute("upassword", pw);
+			response.sendRedirect("salesmanChoice.jsp");
 		}
 	}
 

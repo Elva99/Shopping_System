@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.SalesmanDao;
 import entity.Salesman;
@@ -44,7 +45,16 @@ public class handleSignUp extends HttpServlet {
 		String newpwstr=request.getParameter("newpassword");
 		Salesman man=new Salesman(newnamestr,newpwstr);
 		SalesmanDao SD=new SalesmanDao();
-		SD.signUp(man);
+		Boolean ifSuccess=SD.signUp(man);
+		if (!ifSuccess)
+		{
+			response.setContentType("text/html");
+			PrintWriter out=response.getWriter();
+			out.println("<html><body><p>fail to sign up. Please try again.<br>");
+		}
+		response.sendRedirect("signUpSuccess.jsp");
+		
+		/*
 		response.setContentType("text/html");
 		PrintWriter out=response.getWriter();
 		out.println("<html><body><p>You have signed up.<br>");
@@ -53,7 +63,7 @@ public class handleSignUp extends HttpServlet {
 		out.println("<a href=\"ExitPage.html\"> Exit</a>");
 		out.println("<a href=\"signInPage.html\"> Sign in</a>");
 		out.println("</p></body></html>");
-		
+		*/
 		
 	}
 

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.SalesmanDao;
 import entity.Salesman;
@@ -43,20 +44,22 @@ public class HandleChangePassword extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter out=response.getWriter();
-		String name=request.getParameter("name");
+		HttpSession session=request.getSession(false);
+		if (session==null) {out.println("Error: no session available"); return;}
 		String oldpw=request.getParameter("oldpw");
-		SalesmanDao SD=new SalesmanDao();
-		
-		Salesman man=new Salesman(name,oldpw);
-		Salesman staff=SD.signIn(man);
-		if (staff==null)
+		String username=(String) session.getAttribute("uname");
+		String userpassword=(String) session.getAttribute("upassword");
+		if (!userpassword.equals(oldpw))
 		{
-			out.println("The username or password is incorrent, please try it again.");
-			request.getRequestDispatcher("changePassword.html").include(request, response);
+			String error="The old password is not corrert, please enter it again.";
+			session.setAttribute("error", error);
+			response.sendRedirect("changePassword.jsp");
 		}
 		else
 		{
 			String newpw=request.getParameter("newpw");
+			SalesmanDao SD=new SalesmanDao();
+			Salesman staff=new Salesman(username,userpassword);
 			Boolean ifsuccess=SD.updateSalesmanPd(staff, newpw);
 			if (ifsuccess)
 			{
